@@ -2,8 +2,8 @@
 
 import webbrowser
 import sys
-import time
-
+import os
+import winsound
 # Third-party imports
 
 # -- Kivy
@@ -26,6 +26,8 @@ from kivy.lang import Builder
 from kivy.uix.widget import Widget
 from kivy.uix.floatlayout import FloatLayout
 from kivy.uix.textinput import TextInput
+from kivy.uix.tabbedpanel import TabbedPanel
+
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
@@ -35,9 +37,13 @@ from webdriver_manager.firefox import GeckoDriverManager
 options = webdriver.FirefoxOptions()
 options.add_argument("-headless")
 
+class MainScreen(TabbedPanel):
+    pass
+
 class InsightApp(App):
     def build(self):
         self.title = 'Insight: Internet Browsing Optimizer'
+        return MainScreen()
 
 
 if __name__ == '__main__':
