@@ -1,52 +1,78 @@
 #:kivy 2.1.0
-<MainScreen>
-    do_default_tab: False
-    background_color: (1, 1, 1, 1)
-    canvas.before:
-        Color:
-            rgba: (0.85,0.85,0.85,1)
-        Rectangle:
-            pos: self.pos
-            size: self.size
-    TabbedPanelItem:
-        background_down: ''
-        background_color: 1,1,1,1
-        text: "Home"
-        color: 'black'
+WindowManager:
+    StartWindow:
+        name: "start"
         FloatLayout:
+            do_default_tab: False
+            background_color: (1, 1, 1, 1)
             canvas.before:
                 Color:
-                    rgba: (0.56,0.78,0.78,1)
+                    rgba: (0.85,0.85,0.85,1)
                 Rectangle:
                     pos: self.pos
                     size: self.size
-            Label:
-                text: "Insight - Encontre qualquer informação"
-                font_name: 'fonts/Inter-Regular.ttf'
+            FloatLayout:
+                background_down: ''
+                background_color: 1,1,1,1
+                text: "Home"
                 color: 'black'
-                pos_hint: {'center_x': 0.38, 'top': 1.1}
+                FloatLayout:
+                    canvas.before:
+                        Color:
+                            rgba: (0.56,0.78,0.78,1)
+                        Rectangle:
+                            pos: self.pos
+                            size: self.size
+                    Label:
+                        text: "Insight - Encontre qualquer informação"
+                        font_name: 'fonts/Inter-Regular.ttf'
+                        color: 'black'
+                        pos_hint: {'center_x': 0.38, 'top': 1.1}
 
-            TextInput:
-                background_normal: 'widgets/textinput/white.jpg'
-                id: searchbar
-                padding: [15, (self.height-self.line_height)/2]
-                font_name: 'fonts/Inter-Regular.ttf'
-                multiline: False
-                hint_text: "Type something to begin..."
-                pos_hint: {'center_x': 0.4, 'top': 0.55}
-                size_hint: None, None
-                width: 300
-                height: 48.5
-            Button:
-                id: search_button
-                on_press: app.search_callback()
-                pos_hint: {'center_x': 0.7, 'top': 0.55}
-                size_hint: (0.100, 0.1375)
-                background_normal: ''
-                background_color: 0.85,0.85,0.85,1
-                Image:
-                    source: 'widgets/buttons/search.png'
-                    center_x: self.parent.center_x
-                    center_y: self.parent.center_y
-                    size: self.parent.size
+                    TextInput:
+                        background_normal: 'widgets/textinput/white.jpg'
+                        id: searchbar
+                        padding: [15, (self.height-self.line_height)/2]
+                        font_name: 'fonts/Inter-Regular.ttf'
+                        multiline: False
+                        hint_text: "Type something to begin..."
+                        pos_hint: {'center_x': 0.4, 'top': 0.55}
+                        size_hint: None, None
+                        width: 300
+                        height: 48.5
+                    Button:
+                        id: search_button
+                        on_release: app.search_callback()
+                        pos_hint: {'center_x': 0.7, 'top': 0.55}
+                        size_hint: (0.100, 0.122)
+                        background_normal: ''
+                        background_color: 0.85,0.85,0.85,1
+                        Image:
+                            source: 'widgets/buttons/search.png'
+                            center_x: self.parent.center_x
+                            center_y: self.parent.center_y
+                            size: self.parent.size
+    ResultsWindow:
+        name: "results"
+        FloatLayout:
+            do_default_tab: False
+            background_color: (1, 1, 1, 1)
+            canvas.before:
+                Color:
+                    rgba: (0.85,0.85,0.85,1)
+                Rectangle:
+                    pos: self.pos
+                    size: self.size
+            FloatLayout:
+                background_down: ''
+                background_color: 1,1,1,1
+                text: "Home"
+                color: 'black'
+                FloatLayout:
+                    canvas.before:
+                        Color:
+                            rgba: (0.56,0.78,0.78,1)
+                        Rectangle:
+                            pos: self.pos
+                            size: self.size
 

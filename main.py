@@ -23,6 +23,7 @@ from kivy.lang import Builder
 from kivy.uix.widget import Widget
 from kivy.uix.floatlayout import FloatLayout
 from kivy.uix.textinput import TextInput
+from kivy.uix.screenmanager import ScreenManager, Screen
 
 # -- Others
 import pickle
@@ -48,14 +49,27 @@ options = webdriver.FirefoxOptions()
 options.add_argument("-headless")
 
 
-class MainScreen(TabbedPanel):
+# Screens
+class StartWindow(Screen):
     pass
+
+
+class ResultsWindow(Screen):
+    pass
+
+
+class WindowManager(ScreenManager):
+    pass
+
+
+# KV Files
+kv = Builder.load_file('Insight.kv')
 
 
 class InsightApp(App):
     def build(self):
         self.title = 'Insight: Internet Browsing Optimizer'
-        return MainScreen()
+        return kv
 
     def search_callback(self):
         logging.info(f"[Search Callback Function          ] Running...")
@@ -63,6 +77,7 @@ class InsightApp(App):
         query = query.replace(' ', '+')
         logging.info(f"[Search Callback Function          ] Query set as {query}...")
         if query:
+            self.root.current = "results"
             with requests.session() as s:
                 url = f"https://www.google.com/search?q=`{query}`"
                 headers = {
@@ -76,7 +91,7 @@ class InsightApp(App):
                 titles = soup.findAll('h3')
                 titles_url = [element for element in soup.findAll('a', href=True)]
                 titles = [element.get_text() for element in titles]
-                for i in range(0, len(titles)-2):
+                for i in range(0, len(titles) - 2):
                     print(titles[i], titles_url[i]['href'])
 
 
