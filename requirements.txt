@@ -1,3 +1,4 @@
 kivymd
 kivy
 selenium
+bs4
