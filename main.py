@@ -39,21 +39,11 @@ from kivy.uix.textinput import TextInput
 from kivy.uix.tabbedpanel import TabbedPanel
 from kivy.animation import Animation
 
-from selenium import webdriver
-from selenium.webdriver.common.by import By
-from selenium.webdriver.common.keys import Keys
-from selenium.webdriver.firefox.service import Service as FirefoxService
-from webdriver_manager.firefox import GeckoDriverManager
-
 # Logging
 LOG_FILE = 'Insight.log'
 if os.path.isfile(LOG_FILE) and os.access(LOG_FILE, os.R_OK):
     os.remove('Insight.log')
 logging.basicConfig(filename='Insight.log', level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
-
-options = webdriver.FirefoxOptions()
-options.add_argument("-headless")
-
 
 # Screens
 class StartWindow(Screen):
