@@ -9,8 +9,11 @@ import winsound
 import time
 import threading
 from multiprocessing import Process
+import json
 
 # Third-party imports
+import PySimpleGUI as SG
+import openai
 from bs4 import BeautifulSoup
 # -- Kivy
 import kivy
@@ -45,6 +48,9 @@ if os.path.isfile(LOG_FILE) and os.access(LOG_FILE, os.R_OK):
     os.remove('Insight.log')
 logging.basicConfig(filename='Insight.log', level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
+# METHODS
+from methods.initialization import Initialize
+
 # Screens
 class StartWindow(Screen):
     pass
@@ -68,24 +74,34 @@ kv = Builder.load_file('Insight.kv')
 
 class SearchRoutine:
 
-    def run(self, query,top):
+    def __init__(self):
+        self.description = None
+
+    def run(self, query, top):
         self.move_screens("loading", top)
+
+        def construct(inner):
+            self.build(query, top)
+
         def init(inner):
             routine_thread = Process(target=self.search_routine(query=query, top=top))
             routine_thread.start()
             routine_thread.join()
+            Clock.schedule_once(construct, 5)
+
         Clock.schedule_once(init, 5)
 
-
     def build(self, query, top):
-        pass
+        logging.info(f"[Interface          ] Building...")
+        top.root.ids.summary.text = self.description
+
     def move_screens(self, target, top):
         top.root.current = f"{target}"
 
-
     def search_routine(self, query, top):
         with requests.session() as s:
-            url = f"https://www.google.com/search?q=`{query}`"
+            url = f"""https://www.google.com/search?q="{query}"
+"""
             headers = {
                 "referer": "referer: https://www.google.com/",
                 "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) "
@@ -94,6 +110,7 @@ class SearchRoutine:
             s.post(url, headers=headers)
             response = s.get(url, headers=headers)
             soup = BeautifulSoup(response.text, 'html.parser')
+            self.description = soup.find(class_='VwiC3b yXK7lf lVm3ye r025kc hJNv6b Hdw6tb').get_text()
             titles = soup.findAll('h3')
             titles_url = [element for element in soup.findAll('a', href=True)]
             titles = [element.get_text() for element in titles]
@@ -101,6 +118,7 @@ class SearchRoutine:
                 print(titles[i], titles_url[i]['href'])
             time.sleep(3)
             self.move_screens("results", top)
+
 
 class InsightApp(App):
     def build(self):
@@ -115,6 +133,8 @@ class InsightApp(App):
         SearchRoutine().run(query, self)
 
 
-
 if __name__ == '__main__':
+    initialization_routine = threading.Thread(target=Initialize.run(logging=logging))
+    initialization_routine.start()
+    initialization_routine.join()
     InsightApp().run()

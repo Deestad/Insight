@@ -59,22 +59,36 @@ WindowManager:
             background_color: (1, 1, 1, 1)
             canvas.before:
                 Color:
-                    rgba: (0.85,0.85,0.85,1)
+                    rgba: (0.56,0.78,0.78,1)
                 Rectangle:
                     pos: self.pos
                     size: self.size
-            FloatLayout:
-                background_down: ''
-                background_color: 1,1,1,1
-                text: "Home"
+
+            Label:
+                text: "Assessment of query"
+                font_name: 'fonts/Inter-Bold.ttf'
+                pos_hint: {'center_x': 0.5, 'top': 1.4}
                 color: 'black'
-                FloatLayout:
-                    canvas.before:
-                        Color:
-                            rgba: (0.56,0.78,0.78,1)
-                        Rectangle:
-                            pos: self.pos
-                            size: self.size
+            BoxLayout:
+                pos_hint: {'center_x': 0.5, 'top': 0.85}
+                size_hint: (0.5, 0.3)
+                canvas.before:
+                    Color:
+                        rgba: (1,1,1,1)
+                    Rectangle:
+                        pos: self.pos
+                        size: self.size
+
+                Label:
+                    id: summary
+                    multiline: True
+                    text: ""
+                    font_name: 'fonts/Inter-Regular.ttf'
+                    pos_hint: {'center_x': 0.33, 'top': 0.7}
+                    text_size: self.width, None
+                    size_hint: 0.45, None
+                    height: self.texture_size[1]
+                    color: 'black'
 
     LoadingScreen:
         name: "loading"
