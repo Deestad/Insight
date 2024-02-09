@@ -122,7 +122,7 @@ class SearchRoutine:
 
 class InsightApp(App):
     def build(self):
-        self.title = 'Insight: Internet Browsing Optimizer'
+        self.title = 'Insight: Competitor Analysis'
         return kv
 
     def search_callback(self):

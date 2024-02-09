@@ -24,7 +24,7 @@ WindowManager:
                             pos: self.pos
                             size: self.size
                     Label:
-                        text: "Insight - Power search The Web"
+                        text: "Insight - Find your competition"
                         font_name: 'fonts/Inter-Regular.ttf'
                         color: 'black'
                         pos_hint: {'center_x': 0.38, 'top': 1.1}
@@ -35,7 +35,7 @@ WindowManager:
                         padding: [15, (self.height-self.line_height)/2]
                         font_name: 'fonts/Inter-Regular.ttf'
                         multiline: False
-                        hint_text: "Type something to begin..."
+                        hint_text: "Insert the name of a company or market item to begin..."
                         pos_hint: {'center_x': 0.4, 'top': 0.55}
                         size_hint: None, None
                         width: 300
@@ -59,7 +59,7 @@ WindowManager:
             background_color: (1, 1, 1, 1)
             canvas.before:
                 Color:
-                    rgba: (0.56,0.78,0.78,1)
+                    rgba: (1,1,1,1)
                 Rectangle:
                     pos: self.pos
                     size: self.size
