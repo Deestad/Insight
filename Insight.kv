@@ -63,11 +63,28 @@ WindowManager:
                 Rectangle:
                     pos: self.pos
                     size: self.size
-
+            BoxLayout:
+                pos_hint: {'center_x': 0.8, 'top': 0.89}
+                size_hint: (0.3, 0.3)
+                canvas.before:
+                    Color:
+                        rgba: (0.1,0.1,0.1,1)
+                    Rectangle:
+                        pos: self.pos
+                        size: self.size
+            BoxLayout:
+                pos_hint: {'center_x': 0.8, 'top': 0.5}
+                size_hint: (0.3, 0.3)
+                canvas.before:
+                    Color:
+                        rgba: (0.1,0.1,0.1,1)
+                    Rectangle:
+                        pos: self.pos
+                        size: self.size
             Label:
-                text: "Assessment of query"
-                font_name: 'fonts/Inter-Bold.ttf'
-                pos_hint: {'center_x': 0.17, 'top': 1.4}
+                text: "What is the definition?"
+                font_name: 'fonts/Inter-Black.ttf'
+                pos_hint: {'center_x': 0.18, 'top': 1.4}
                 color: 'black'
             BoxLayout:
                 pos_hint: {'center_x': 0.3, 'top': 0.84}
@@ -89,6 +106,18 @@ WindowManager:
                     size_hint: 0.45, None
                     height: self.texture_size[1]
                     color: 0.4,0.4,0.4,1
+            Button:
+                id: analyse_button
+                on_release: pass
+                pos_hint: {'center_x': 0.17, 'top': 0.3}
+                size_hint: (0.267, 0.163)
+                background_normal: ''
+                background_color: 1,1,1,0
+                Image:
+                    source: 'widgets/buttons/analyse.png'
+                    center_x: self.parent.center_x
+                    center_y: self.parent.center_y
+                    size: self.parent.size
 
     LoadingScreen:
         name: "loading"
@@ -111,5 +140,5 @@ WindowManager:
                 text: "Loading results"
                 font_name: 'fonts/Inter-Black.ttf'
                 color: 'white'
-                pos_hint: {'center_x': 0.5, 'top': 0.75}
+                pos_hint: {'center_x': 0.5, 'top': 0.77}
 
