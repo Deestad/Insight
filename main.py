@@ -72,6 +72,7 @@ class SearchRoutine:
 
     def __init__(self):
         self.description = None
+        self.keyword = None
 
     def run(self, query, top):
         self.move_screens("loading", top)
@@ -111,7 +112,7 @@ class SearchRoutine:
             company_url = soup.find('cite').text
             return company_url
 
-    def verify_competitor(self, target):
+    def verify_company(self, target):
         with requests.session() as session:
             url = f"{target}"
             headers = {
@@ -123,26 +124,31 @@ class SearchRoutine:
 
             soup = BeautifulSoup(response.text, 'html.parser')
             page_text = soup.get_text()
-            context = openai.chat.completions.create(
-                model="gpt-3.5-turbo",
-                max_tokens=256,
-                messages=[
+            #context = openai.chat.completions.create(
+            #    model="gpt-3.5-turbo",
+             #   max_tokens=256,
+              #  messages=[
 
-                    {"role": "system",
-                     "content": ""},
-                    {"role": "user",
-                     "content": f"Look at this page and tell me what this company is about in one SMALL paragraph. Make it short."
-                                f"PAGE: {page_text}"}
-                ]
+                  #  {"role": "system",
+                 #    "content": ""},
+                #    {"role": "user",
+               #      "content": f"Look at this page and tell me what this company is about in one SMALL paragraph. Make it short."
+              #                  f"PAGE: {page_text}"}
+             #   ]
 
-            )
-            self.description = context.choices[0].message.content
+            #)
+            #self.description = context.choices[0].message.content
+        # as of now,
+            self.description = """Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam dignissim sem sed 
+            eros lacinia, ut rutrum leo placerat. Suspendisse ullamcorper porta orci et auctor. Quisque eu nisl ut 
+            quam congue sagittis at sit amet risus. Nulla facilisi. Curabitur sit amet sem vitae nulla facilisis 
+            porta. Duis eget venenatis nisl, et molestie ligula. Aenean eget lorem posuere sem ullamcorper rutrum."""
 
     def search_routine(self, query, top):
         # Make a Google search from Query and use Query as target
         # ++ Verification of competitor's website
         with requests.session() as session:
-            self.verify_competitor(self.google_search(query))
+            self.verify_company(self.google_search(query))
             # titles = soup.findAll('h3')
             # titles_url = [element for element in soup.findAll('a', href=True)]
             # titles = [element.get_text() for element in titles]

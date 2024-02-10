@@ -15,18 +15,18 @@ WindowManager:
                 background_down: ''
                 background_color: 1,1,1,1
                 text: "Home"
-                color: 'black'
+                color: 'white'
                 FloatLayout:
                     canvas.before:
                         Color:
-                            rgba: (0.56,0.78,0.78,1)
+                            rgba: (0.1,0.1,0.1,1)
                         Rectangle:
                             pos: self.pos
                             size: self.size
                     Label:
                         text: "Insight - Find your competition"
                         font_name: 'fonts/Inter-Regular.ttf'
-                        color: 'black'
+                        color: 'white'
                         pos_hint: {'center_x': 0.38, 'top': 1.1}
 
                     TextInput:
@@ -35,7 +35,7 @@ WindowManager:
                         padding: [15, (self.height-self.line_height)/2]
                         font_name: 'fonts/Inter-Regular.ttf'
                         multiline: False
-                        hint_text: "Insert the name of a company or market item to begin..."
+                        hint_text: "Insert the name of a company or field..."
                         pos_hint: {'center_x': 0.4, 'top': 0.55}
                         size_hint: None, None
                         width: 300
@@ -67,11 +67,11 @@ WindowManager:
             Label:
                 text: "Assessment of query"
                 font_name: 'fonts/Inter-Bold.ttf'
-                pos_hint: {'center_x': 0.5, 'top': 1.4}
+                pos_hint: {'center_x': 0.17, 'top': 1.4}
                 color: 'black'
             BoxLayout:
-                pos_hint: {'center_x': 0.5, 'top': 0.85}
-                size_hint: (0.5, 0.3)
+                pos_hint: {'center_x': 0.3, 'top': 0.84}
+                size_hint: (0.5, 0.1)
                 canvas.before:
                     Color:
                         rgba: (1,1,1,1)
@@ -84,11 +84,11 @@ WindowManager:
                     multiline: True
                     text: ""
                     font_name: 'fonts/Inter-Regular.ttf'
-                    pos_hint: {'center_x': 0.33, 'top': 0.7}
+                    pos_hint: {'center_x': 0.2, 'top': 0.7}
                     text_size: self.width, None
                     size_hint: 0.45, None
                     height: self.texture_size[1]
-                    color: 'black'
+                    color: 0.4,0.4,0.4,1
 
     LoadingScreen:
         name: "loading"
@@ -97,7 +97,7 @@ WindowManager:
             background_color: (1, 1, 1, 1)
             canvas.before:
                 Color:
-                    rgba: (0.56,0.78,0.78,1)
+                    rgba: (0.1,0.1,0.1,1)
                 Rectangle:
                     pos: self.pos
                     size: self.size
@@ -109,7 +109,7 @@ WindowManager:
                 size_hint: (0.5, 0.5)
             Label:
                 text: "Loading results"
-                font_name: 'fonts/Inter-Regular.ttf'
-                color: 'black'
-                pos_hint: {'center_x': 0.5, 'top': 0.9}
+                font_name: 'fonts/Inter-Black.ttf'
+                color: 'white'
+                pos_hint: {'center_x': 0.5, 'top': 0.8}
 
