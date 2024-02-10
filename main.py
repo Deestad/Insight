@@ -51,6 +51,7 @@ logging.basicConfig(filename='Insight.log', level=logging.INFO, format='%(asctim
 # METHODS
 from methods.initialization import Initialize
 
+
 # Screens
 class StartWindow(Screen):
     pass
@@ -98,24 +99,61 @@ class SearchRoutine:
     def move_screens(self, target, top):
         top.root.current = f"{target}"
 
-    def search_routine(self, query, top):
-        with requests.session() as s:
+    def google_search(self, query):
+        with requests.session() as session:
+            # Insight gets a Google result
             url = f"""https://www.google.com/search?q="{query}"
-"""
+            """
             headers = {
                 "referer": "referer: https://www.google.com/",
                 "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) "
                               "Chrome/89.0.4389.114 Safari/537.36"
             }
-            s.post(url, headers=headers)
-            response = s.get(url, headers=headers)
+            session.post(url, headers=headers)
+            response = session.get(url, headers=headers)
+
             soup = BeautifulSoup(response.text, 'html.parser')
-            self.description = soup.find(class_='VwiC3b yXK7lf lVm3ye r025kc hJNv6b Hdw6tb').get_text()
-            titles = soup.findAll('h3')
-            titles_url = [element for element in soup.findAll('a', href=True)]
-            titles = [element.get_text() for element in titles]
-            for i in range(0, len(titles) - 2):
-                print(titles[i], titles_url[i]['href'])
+            company_url = soup.find('cite').text
+            return company_url
+
+    def verify_competitor(self, target):
+        with requests.session() as session:
+            url = f"{target}"
+            headers = {
+                "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) "
+                              "Chrome/89.0.4389.114 Safari/537.36"
+            }
+            session.post(url, headers=headers)
+            response = session.get(url, headers=headers)
+
+            soup = BeautifulSoup(response.text, 'html.parser')
+            page_text = soup.get_text()
+            context = openai.chat.completions.create(
+                model="gpt-3.5-turbo",
+                max_tokens=256,
+                messages=[
+
+                    {"role": "system",
+                     "content": ""},
+                    {"role": "user",
+                     "content": f"Look at this page and tell me what this company is about in one small paragraph. "
+                                f"PAGE: {page_text}"}
+                ]
+
+            )
+            self.description = context.choices[0].message.content
+
+    def search_routine(self, query, top):
+        # Make a Google search from Query and use Query as target
+        # ++ Verification of competitor's website
+        with requests.session() as session:
+            self.verify_competitor(self.google_search(query))
+            # titles = soup.findAll('h3')
+            # titles_url = [element for element in soup.findAll('a', href=True)]
+            # titles = [element.get_text() for element in titles]
+            # for i in range(0, len(titles) - 2):
+            #     print(titles[i], titles_url[i]['href'])
+
             time.sleep(3)
             self.move_screens("results", top)
 
