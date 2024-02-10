@@ -4,11 +4,18 @@ import time
 import openai
 import PySimpleGUI as SG
 import os
-
+import logging
 
 class Initialize:
 
-    def run(logging):
+    def run(self):
+        # Logging
+        LOG_FILE = '../Insight.log'
+        if os.path.isfile(LOG_FILE) and os.access(LOG_FILE, os.R_OK):
+            os.remove('Insight.log')
+        logging.basicConfig(filename='Insight.log', level=logging.INFO,
+                            format='%(asctime)s - %(levelname)s - %(message)s', force=True)
+
         TOKEN_FILE = "token.json"
         if os.path.isfile(TOKEN_FILE) and os.access(TOKEN_FILE, os.R_OK):
             logging.info("[Initializing...          ] Token detected...")

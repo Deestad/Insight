@@ -42,11 +42,6 @@ from kivy.uix.textinput import TextInput
 from kivy.uix.tabbedpanel import TabbedPanel
 from kivy.animation import Animation
 
-# Logging
-LOG_FILE = 'Insight.log'
-if os.path.isfile(LOG_FILE) and os.access(LOG_FILE, os.R_OK):
-    os.remove('Insight.log')
-logging.basicConfig(filename='Insight.log', level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
 # METHODS
 from methods.initialization import Initialize
@@ -136,7 +131,7 @@ class SearchRoutine:
                     {"role": "system",
                      "content": ""},
                     {"role": "user",
-                     "content": f"Look at this page and tell me what this company is about in one small paragraph. "
+                     "content": f"Look at this page and tell me what this company is about in one SMALL paragraph. Make it short."
                                 f"PAGE: {page_text}"}
                 ]
 
@@ -172,7 +167,7 @@ class InsightApp(App):
 
 
 if __name__ == '__main__':
-    initialization_routine = threading.Thread(target=Initialize.run(logging=logging))
+    initialization_routine = threading.Thread(target=Initialize().run())
     initialization_routine.start()
     initialization_routine.join()
     InsightApp().run()
