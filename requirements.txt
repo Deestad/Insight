@@ -1,5 +1,6 @@
 kivymd
 kivy
+Kivy
 bs4
 openai
-PySimpleGUI
+easygui

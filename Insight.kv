@@ -68,19 +68,31 @@ WindowManager:
                 size_hint: (0.3, 0.3)
                 canvas.before:
                     Color:
-                        rgba: (0.1,0.1,0.1,1)
+                        rgba: (0.5,0.5,0.5,1)
                     Rectangle:
                         pos: self.pos
                         size: self.size
+                Image:
+                    source: 'widgets/images/image2.jpg'
+                    id: image2
+                    center_x: self.parent.center_x
+                    center_y: self.parent.center_y
+                    size: self.parent.size
             BoxLayout:
                 pos_hint: {'center_x': 0.8, 'top': 0.5}
                 size_hint: (0.3, 0.3)
                 canvas.before:
                     Color:
-                        rgba: (0.1,0.1,0.1,1)
+                        rgba: (0.5,0.5,0.5,1)
                     Rectangle:
                         pos: self.pos
                         size: self.size
+                Image:
+                    source: 'widgets/images/image1.jpg'
+                    id: image1
+                    center_x: self.parent.center_x
+                    center_y: self.parent.center_y
+                    size: self.parent.size
             Label:
                 text: "What is the definition?"
                 font_name: 'fonts/Inter-Black.ttf'

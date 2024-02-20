@@ -2,7 +2,7 @@ import json
 import sys
 import time
 import openai
-import PySimpleGUI as SG
+import easygui
 import os
 import logging
 
@@ -25,11 +25,14 @@ class Initialize:
                 openai.api_key = ai_token
         else:
             logging.warning("[Initializing...          ] Could not find Token...")
-            token = SG.PopupGetText("Enter your OpenAI API key.", title="Configuration")
+
+            #token = SG.PopupGetText("Enter your OpenAI API key.", title="Configuration")
+            title = "Insight configuration processus"
+            msg = "Insert your OpenAI token."
+            token = easygui.enterbox(msg,title)
             data = {
                 'openaitoken': token,
             }
             with open(TOKEN_FILE, "w") as file:
                 json.dump(data, file)
-            SG.Popup("Restart Insight.")
             sys.exit()

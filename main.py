@@ -6,14 +6,15 @@ import os
 import logging
 import requests
 import winsound
+from PIL import Image
 import time
 import threading
 from multiprocessing import Process
 import json
 
 # Third-party imports
-import PySimpleGUI as SG
 import openai
+import easygui
 from bs4 import BeautifulSoup
 # -- Kivy
 import kivy
@@ -41,7 +42,6 @@ from kivy.uix.floatlayout import FloatLayout
 from kivy.uix.textinput import TextInput
 from kivy.uix.tabbedpanel import TabbedPanel
 from kivy.animation import Animation
-
 
 # METHODS
 from methods.initialization import Initialize
@@ -73,6 +73,7 @@ class SearchRoutine:
     def __init__(self):
         self.description = None
         self.keyword = None
+        self.images = [False, False]
 
     def run(self, query, top):
         self.move_screens("loading", top)
@@ -91,7 +92,8 @@ class SearchRoutine:
     def build(self, query, top):
         logging.info(f"[Interface          ] Building...")
         top.root.ids.summary.text = self.description
-
+        top.root.ids.image1.reload()
+        top.root.ids.image2.reload()
     def move_screens(self, target, top):
         top.root.current = f"{target}"
 
@@ -114,35 +116,39 @@ class SearchRoutine:
 
     def verify_company(self, target):
         with requests.session() as session:
-            url = f"{target}"
+            url = f"{target}/"
             headers = {
                 "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) "
                               "Chrome/89.0.4389.114 Safari/537.36"
             }
             session.post(url, headers=headers)
             response = session.get(url, headers=headers)
-
             soup = BeautifulSoup(response.text, 'html.parser')
             page_text = soup.get_text()
-            #context = openai.chat.completions.create(
-            #    model="gpt-3.5-turbo",
-             #   max_tokens=256,
-              #  messages=[
+            page_images = soup.find_all("img", limit=2, src=True)
+            for index, image in enumerate(page_images):
+                logging.info(f"[Search Callback Function          ] Getting images...")
+                r = requests.get(f"{url}{page_images[index]['src']}", headers=headers)
+                r.raise_for_status()
+                r.raw.decode_content = True
+                if r.status_code == 200:
+                    with open(f"widgets/images/image{index + 1}.jpg", "wb") as f:
+                        f.write(r.content)
 
-                  #  {"role": "system",
-                 #    "content": ""},
-                #    {"role": "user",
-               #      "content": f"Look at this page and tell me what this company is about in one SMALL paragraph. Make it short."
-              #                  f"PAGE: {page_text}"}
-             #   ]
+            context = openai.chat.completions.create(
+                model="gpt-3.5-turbo",
+                max_tokens=256,
+                messages=[
 
-            #)
-            #self.description = context.choices[0].message.content
-        # as of now,
-            self.description = """Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam dignissim sem sed 
-            eros lacinia, ut rutrum leo placerat. Suspendisse ullamcorper porta orci et auctor. Quisque eu nisl ut 
-            quam congue sagittis at sit amet risus. Nulla facilisi. Curabitur sit amet sem vitae nulla facilisis 
-            porta. Duis eget venenatis nisl, et molestie ligula. Aenean eget lorem posuere sem ullamcorper rutrum."""
+                    {"role": "system",
+                     "content": ""},
+                    {"role": "user",
+                     "content": f"Look at this page and tell me what this company is about in one SMALL paragraph. Make it short."
+                                f"PAGE: {page_text}"}
+                ]
+
+            )
+            self.description = context.choices[0].message.content
 
     def search_routine(self, query, top):
         # Make a Google search from Query and use Query as target
@@ -173,7 +179,10 @@ class InsightApp(App):
 
 
 if __name__ == '__main__':
-    initialization_routine = threading.Thread(target=Initialize().run())
-    initialization_routine.start()
-    initialization_routine.join()
-    InsightApp().run()
+    try:
+        initialization_routine = threading.Thread(target=Initialize().run())
+        initialization_routine.start()
+        initialization_routine.join()
+        InsightApp().run()
+    except Exception as e:
+        print(e)
