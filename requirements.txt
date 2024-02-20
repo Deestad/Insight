@@ -1,6 +1,5 @@
 kivymd
 kivy
-selenium
 bs4
 openai
 PySimpleGUI
