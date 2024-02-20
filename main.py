@@ -128,7 +128,10 @@ class SearchRoutine:
             page_images = soup.find_all("img", limit=2, src=True)
             for index, image in enumerate(page_images):
                 logging.info(f"[Search Callback Function          ] Getting images...")
-                r = requests.get(f"{url}{page_images[index]['src']}", headers=headers)
+                if page_images[index]['src'].startswith("http"):
+                    r = requests.get(f"{page_images[index]['src']}", headers=headers)
+                else:
+                    r = requests.get(f"{url}{page_images[index]['src']}", headers=headers)
                 r.raise_for_status()
                 r.raw.decode_content = True
                 if r.status_code == 200:
